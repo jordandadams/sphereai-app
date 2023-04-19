@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
+import '../widgets/account_screen/option_row.dart';
+import '../widgets/account_screen/section_title.dart';
 import '../widgets/ai_assistant_screen/custom_carousel.dart';
 import 'account_view_model.dart';
 
@@ -16,7 +18,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final accountViewModel = ref.read(accountViewModelProvider);
+    final accountViewModel = ref.watch(accountViewModelProvider);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -48,14 +50,13 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
 
                 // Column for displaying user's name and email
                 Column(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
-                  mainAxisAlignment:
-                      MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'User Name',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       'user@example.com',
@@ -70,6 +71,41 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 // Icon for the arrow
                 Icon(Ionicons.arrow_forward, size: 20),
               ],
+            ),
+
+            // General section title
+            SizedBox(height: 25),
+            SectionTitle(title: 'General'),
+            SizedBox(height: 15),
+            // Personal Info
+            OptionRow(
+              icon: Ionicons.person_outline,
+              title: 'Personal Info',
+              onTap: () {
+                accountViewModel.onArrowTap();
+              },
+            ),
+            SizedBox(height: 13),
+            // Security
+            OptionRow(
+              icon: Ionicons.shield_outline,
+              title: 'Security',
+              onTap: () {
+                accountViewModel.onArrowTap();
+              },
+            ),
+            // Dark Mode
+            OptionRow(
+              icon: Ionicons.eye_outline,
+              title: 'Dark Mode',
+              trailing: Switch(
+                value: accountViewModel
+                    .isDarkMode, // Get the value from the view model
+                onChanged: (bool value) {
+                  accountViewModel
+                      .toggleDarkMode(); // Toggle the value using the view model
+                },
+              ),
             ),
           ],
         ),
