@@ -57,7 +57,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                     Text(
                       'User Name',
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
                     ),
                     Text(
                       'user@example.com',
@@ -70,7 +70,7 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 Padding(padding: EdgeInsets.symmetric(horizontal: 40)),
 
                 // Icon for the arrow
-                Icon(Ionicons.arrow_forward, size: 20),
+                Icon(Ionicons.arrow_forward, size: 20, color: Theme.of(context).colorScheme.secondary,),
               ],
             ),
             SizedBox(height: 25),

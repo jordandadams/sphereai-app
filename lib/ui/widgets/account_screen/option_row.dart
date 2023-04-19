@@ -17,12 +17,12 @@ class OptionRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Icon(icon, size: 18),
+          Icon(icon, size: 18, color: Theme.of(context).colorScheme.secondary,),
           SizedBox(width: 16),
           Expanded(
             child: Text(
               title,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary,),
             ),
           ),
           // Wrap the trailing widget with InkWell and Container
@@ -42,7 +42,7 @@ class OptionRow extends StatelessWidget {
                     width: 40, // Fixed width for alignment
                     alignment: Alignment
                         .centerRight, // Right alignment within the container
-                    child: Icon(Ionicons.arrow_forward, size: 20),
+                    child: Icon(Ionicons.arrow_forward, size: 20, color: Theme.of(context).colorScheme.secondary,),
                   ),
                 ),
         ],
