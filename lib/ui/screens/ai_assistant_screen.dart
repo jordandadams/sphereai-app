@@ -65,7 +65,9 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
                     ),
                     Spacer(),
                     IconButton(
-                      onPressed: () => {},
+                      onPressed: () {
+                        aiAssistantViewModel.onArrowTap();
+                      },
                       icon: Icon(Ionicons.arrow_forward),
                     ),
                   ],

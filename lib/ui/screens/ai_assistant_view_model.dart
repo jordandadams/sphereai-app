@@ -6,7 +6,7 @@ final aiAssistantViewModelProvider = ChangeNotifierProvider<AIAssistantViewModel
 });
 
 class AIAssistantViewModel extends ChangeNotifier {
-  void onStartChat() {
-    print('Start Chat button tapped!');
+  void onArrowTap() {
+    print('Arrow button tapped!');
   }
 }
