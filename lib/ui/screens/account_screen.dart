@@ -5,7 +5,6 @@ import 'package:ionicons/ionicons.dart';
 import '../../states/theme_mode_state.dart';
 import '../widgets/account_screen/option_row.dart';
 import '../widgets/account_screen/section_title.dart';
-import '../widgets/ai_assistant_screen/custom_carousel.dart';
 import 'account_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
