@@ -1,6 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
+import '../widgets/chats_screen/start_chat_button.dart';
+import '../widgets/sign_up_screen/email_input.dart';
+import '../widgets/sign_up_screen/password_input.dart';
+import '../widgets/sign_up_screen/terms_checkbox.dart';
 import 'sign_up_view_model.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
@@ -11,6 +16,10 @@ class SignUpScreen extends ConsumerStatefulWidget {
 }
 
 class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  // Controllers for email and password TextFields
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
@@ -20,13 +29,177 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
-          'Sign Up',
+          'Create Account',
           style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
               fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Ionicons.arrow_back,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Hello there 👋',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 15),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Please enter your email & password to create\nan account.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w100,
+                    fontSize: 16,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 25),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Email',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: EmailInput(emailController: emailController),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Password',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: PasswordInput(passwordController: passwordController),
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+            child: TermsCheckBox(),
+          ),
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Color.fromARGB(255, 143, 143, 143),
+                    thickness: 0.2,
+                    height: 10,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // Center-align the row content
+              children: [
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Already have an account? ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Log in',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // Handle the "Log in" tap here
+                            print('Log in tapped');
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 10),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Color.fromARGB(255, 143, 143, 143),
+                    thickness: 0.2,
+                    height: 10,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 25),
+          StartChatButton(
+            text: 'Continue',
+            onPressed: () {
+              signUpViewModel.onStartChat();
+            },
+          ),
+        ],
       ),
     );
   }

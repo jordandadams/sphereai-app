@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 import '../widgets/chats_screen/start_chat_button.dart';
 import 'auth_view_model.dart';
+import 'login_screen.dart';
+import 'sign_up_screen.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -19,19 +21,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        title: Text(
-          'Auth Screen',
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
       body: Column(
         mainAxisAlignment:
-            MainAxisAlignment.start, // Align children to the start
+            MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 16), // Add spacing between the app bar and the logo
@@ -82,8 +74,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           StartChatButton(
             text: 'Login',
             onPressed: () {
-              // Invoke the onStartChat method from the view model
               authViewModel.onStartChat();
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
             },
           ),
           Padding(
@@ -120,7 +113,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
               width: double
                   .infinity, // Make the button span across the screen horizontally
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  authViewModel.onStartChat();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SignUpScreen()));
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
                       Theme.of(context).colorScheme.surface, // Background color

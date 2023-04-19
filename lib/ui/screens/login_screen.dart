@@ -27,6 +27,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Ionicons.arrow_back,
+            color: Theme.of(context).colorScheme.secondary,
+            size: 20,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
     );
   }
