@@ -36,10 +36,10 @@ const Color errorColor = Color(0xFFDC2626); // red-600
 
 final ColorScheme lightColorScheme = ColorScheme.light(
   primary: Color.fromARGB(255, 33, 199, 128),
-  secondary: primarySwatch.shade500,
+  secondary: Colors.black,
   onSecondary: Colors.white,
   error: errorColor,
-  background: textSwatch.shade200,
+  background: Colors.white,
   onBackground: textSwatch.shade500,
   onSurface: textSwatch.shade500,
   surface: textSwatch.shade50,
@@ -48,11 +48,11 @@ final ColorScheme lightColorScheme = ColorScheme.light(
 );
 
 final ColorScheme darkColorScheme = ColorScheme.dark(
-  primary: primarySwatch.shade500,
-  secondary: primarySwatch.shade500,
+  primary: Color.fromARGB(255, 33, 199, 128),
+  secondary: Colors.white,
   onSecondary: Colors.white,
   error: errorColor,
-  background: const Color(0xFF171724),
+  background: Color.fromARGB(255, 18, 20, 25),
   onBackground: textSwatch.shade400,
   onSurface: textSwatch.shade300,
   surface: const Color(0xFF262630),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
+import '../../states/theme_mode_state.dart';
 import '../widgets/account_screen/option_row.dart';
 import '../widgets/account_screen/section_title.dart';
 import '../widgets/ai_assistant_screen/custom_carousel.dart';
@@ -21,11 +22,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
     final accountViewModel = ref.watch(accountViewModelProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
           'User Profile',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -93,13 +94,20 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
             OptionRow(
               icon: Ionicons.eye_outline,
               title: 'Dark Mode',
-              trailing: Switch(
-                activeColor: Color.fromARGB(255, 33, 199, 128),
-                value: accountViewModel
-                    .isDarkMode, // Get the value from the view model
-                onChanged: (bool value) {
-                  accountViewModel
-                      .toggleDarkMode(); // Toggle the value using the view model
+              trailing: Consumer(
+                builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                  // Listen to the themeProvider to get the current theme mode
+                  final themeState = ref.watch(themeProvider);
+                  return Switch(
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    value: themeState.themeMode ==
+                        ThemeMode.dark, // Check if current theme mode is dark
+                    onChanged: (bool value) {
+                      // Toggle the theme mode based on the current value
+                      themeState.setThemeMode(
+                          value ? ThemeMode.dark : ThemeMode.light);
+                    },
+                  );
                 },
               ),
             ),
@@ -135,13 +143,19 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Ionicons.log_out_outline, size: 18, color: Colors.red,),
+                  Icon(
+                    Ionicons.log_out_outline,
+                    size: 18,
+                    color: Colors.red,
+                  ),
                   SizedBox(width: 16),
                   Expanded(
                     child: Text(
                       'Logout',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.red),
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                   ),
                   InkWell(

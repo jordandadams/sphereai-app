@@ -16,7 +16,7 @@ class StartChatButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
-            backgroundColor: Color.fromARGB(255, 33, 199, 128), // Background color
+            backgroundColor: Theme.of(context).colorScheme.primary, // Background color
             foregroundColor: Colors.white, // Text color
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(30.0), // Rounded corners
