@@ -72,12 +72,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 Icon(Ionicons.arrow_forward, size: 20),
               ],
             ),
-
-            // General section title
             SizedBox(height: 25),
             SectionTitle(title: 'General'),
             SizedBox(height: 15),
-            // Personal Info
             OptionRow(
               icon: Ionicons.person_outline,
               title: 'Personal Info',
@@ -86,7 +83,6 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               },
             ),
             SizedBox(height: 13),
-            // Security
             OptionRow(
               icon: Ionicons.shield_outline,
               title: 'Security',
@@ -94,11 +90,11 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 accountViewModel.onArrowTap();
               },
             ),
-            // Dark Mode
             OptionRow(
               icon: Ionicons.eye_outline,
               title: 'Dark Mode',
               trailing: Switch(
+                activeColor: Color.fromARGB(255, 33, 199, 128),
                 value: accountViewModel
                     .isDarkMode, // Get the value from the view model
                 onChanged: (bool value) {
@@ -107,6 +103,58 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 },
               ),
             ),
+            SizedBox(height: 5),
+            SectionTitle(title: 'About'),
+            SizedBox(height: 15),
+            OptionRow(
+              icon: Ionicons.help_outline,
+              title: 'Help Center',
+              onTap: () {
+                accountViewModel.onArrowTap();
+              },
+            ),
+            SizedBox(height: 13),
+            OptionRow(
+              icon: Ionicons.lock_closed_outline,
+              title: 'Privacy Policy',
+              onTap: () {
+                accountViewModel.onArrowTap();
+              },
+            ),
+            SizedBox(height: 13),
+            OptionRow(
+              icon: Ionicons.information_circle_outline,
+              title: 'About SphereAI',
+              onTap: () {
+                accountViewModel.onArrowTap();
+              },
+            ),
+            SizedBox(height: 13),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Icon(Ionicons.log_out_outline, size: 18, color: Colors.red,),
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Text(
+                      'Logout',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.red),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: 35, // Fixed width for alignment
+                      alignment: Alignment
+                          .centerRight, // Right alignment within the container
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
