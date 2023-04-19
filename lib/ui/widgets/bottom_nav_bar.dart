@@ -18,7 +18,7 @@ class BottomNavBar extends ConsumerWidget {
       },
       type: BottomNavigationBarType.fixed,
       elevation: 0,
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       selectedItemColor: Theme.of(context).colorScheme.primary,
       unselectedItemColor: Theme.of(context).textTheme.bodySmall!.color,
       items: <BottomNavigationBarItem>[

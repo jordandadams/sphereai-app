@@ -19,11 +19,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final chatViewModel = ref.read(chatViewModelProvider);
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
           'SphereAI',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -47,6 +47,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             style: TextStyle(
               fontSize: 35,
               fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             textAlign: TextAlign.center,
           ),

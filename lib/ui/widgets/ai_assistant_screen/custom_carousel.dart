@@ -30,12 +30,12 @@ class CustomCarousel extends StatelessWidget {
                 children: [
                   Text(
                     carouselHeading,
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
                   ),
                   Spacer(),
                   IconButton(
                     onPressed: () {},
-                    icon: Icon(Ionicons.arrow_forward),
+                    icon: Icon(Ionicons.arrow_forward, color: Theme.of(context).colorScheme.secondary,),
                   ),
                 ],
               ),
@@ -48,7 +48,7 @@ class CustomCarousel extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.5,
                   margin: EdgeInsets.symmetric(horizontal: 10.0),
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.background,
+                    color: Theme.of(context).colorScheme.onSecondary,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -62,7 +62,7 @@ class CustomCarousel extends StatelessWidget {
                       SizedBox(height: 10),
                       Text(
                         headingList[index],
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 5),
