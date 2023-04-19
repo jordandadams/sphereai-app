@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ionicons/ionicons.dart';
 
+import '../widgets/ai_assistant_screen/custom_carousel.dart';
 import 'ai_assistant_view_model.dart';
 
 class AIAssistantScreen extends ConsumerStatefulWidget {
@@ -13,24 +14,6 @@ class AIAssistantScreen extends ConsumerStatefulWidget {
 }
 
 class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
-  final List<String> emojiList = [
-    '🚀', // Rocket emoji
-    '🌟', // Star emoji
-    '🎉', // Party popper emoji
-  ];
-
-  final List<String> headingList = [
-    'Heading 1',
-    'Heading 2',
-    'Heading 3',
-  ];
-
-  final List<String> descriptionList = [
-    'Description 1',
-    'Description 2',
-    'Description 3',
-  ];
-
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
@@ -46,78 +29,64 @@ class _AIAssistantScreenState extends ConsumerState<AIAssistantScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: Container(
-        alignment: Alignment.topLeft,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment:
-                CrossAxisAlignment.start, // Left-align the text and carousel
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(9, 0, 0, 0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Carousel Heading',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () => {},
-                      icon: Icon(Ionicons.arrow_forward),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 10), // Spacing between text and carousel
-              CarouselSlider.builder(
-                itemCount: emojiList.length,
-                itemBuilder: (BuildContext context, int index, int realIndex) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          emojiList[index],
-                          style: TextStyle(fontSize: 50), // Emoji size
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          headingList[index],
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 5),
-                        Text(
-                          descriptionList[index],
-                          style: TextStyle(fontSize: 14),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                options: CarouselOptions(
-                  height: 180,
-                  autoPlay: false,
-                  viewportFraction: 0.5,
-                  enlargeCenterPage: false,
-                  enableInfiniteScroll: false,
-                  padEnds: false,
-                ),
-              ),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            CustomCarousel(
+              carouselHeading: 'Carousel Heading',
+              emojiList: [
+                '🚀', // Rocket emoji
+                '🌟', // Star emoji
+                '🎉', // Party popper emoji
+              ],
+              headingList: [
+                'Write an Article',
+                'Heading 2',
+                'Heading 3',
+              ],
+              descriptionList: [
+                'Generate well-written articles on any topic you want!',
+                'Description 2',
+                'Description 3',
+              ],
+            ),
+            CustomCarousel(
+              carouselHeading: 'Second Carousel',
+              emojiList: [
+                '📚', // Books emoji
+                '💡', // Light bulb emoji
+                '🔍', // Magnifying glass emoji
+              ],
+              headingList: [
+                'Second Heading 1',
+                'Second Heading 2',
+                'Second Heading 3',
+              ],
+              descriptionList: [
+                'Second Description 1',
+                'Second Description 2',
+                'Second Description 3',
+              ],
+            ),
+            CustomCarousel(
+              carouselHeading: 'Third Carousel',
+              emojiList: [
+                '📚', // Books emoji
+                '💡', // Light bulb emoji
+                '🔍', // Magnifying glass emoji
+              ],
+              headingList: [
+                'Third Heading 1',
+                'Third Heading 2',
+                'Third Heading 3',
+              ],
+              descriptionList: [
+                'Third Description 1',
+                'Third Description 2',
+                'Third Description 3',
+              ],
+            ),
+          ],
         ),
       ),
     );
