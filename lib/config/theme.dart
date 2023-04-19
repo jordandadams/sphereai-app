@@ -37,7 +37,7 @@ const Color errorColor = Color(0xFFDC2626); // red-600
 final ColorScheme lightColorScheme = ColorScheme.light(
   primary: Color.fromARGB(255, 33, 199, 128),
   secondary: Colors.black,
-  onSecondary: Colors.white,
+  onSecondary: Color.fromARGB(255, 249, 249, 249),
   error: errorColor,
   background: Colors.white,
   onBackground: textSwatch.shade500,
@@ -50,7 +50,7 @@ final ColorScheme lightColorScheme = ColorScheme.light(
 final ColorScheme darkColorScheme = ColorScheme.dark(
   primary: Color.fromARGB(255, 33, 199, 128),
   secondary: Colors.white,
-  onSecondary: Colors.white,
+  onSecondary: Color.fromARGB(255, 24, 26, 31),
   error: errorColor,
   background: Color.fromARGB(255, 18, 20, 25),
   onBackground: textSwatch.shade400,
