@@ -79,6 +79,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
           ),
           SizedBox(height: 30),
           StartChatButton(
+            text: 'Start Chat',
             onPressed: () {
               // Invoke the onStartChat method from the view model
               chatViewModel.onStartChat();

@@ -1,11 +1,10 @@
-// start_chat_button.dart
-
 import 'package:flutter/material.dart';
 
 class StartChatButton extends StatelessWidget {
   final VoidCallback? onPressed;
+  final String text;
 
-  const StartChatButton({Key? key, this.onPressed}) : super(key: key);
+  const StartChatButton({Key? key, required this.text, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,7 @@ class StartChatButton extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 17), // Vertical padding
           ),
           child: Text(
-            'Start Chat',
+            text,
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
         ),
