@@ -26,7 +26,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
       appBar: AppBar(
         title: Text(
           'User Profile',
-          style: TextStyle(color: Theme.of(context).colorScheme.secondary, fontWeight: FontWeight.bold),
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -56,8 +58,10 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                   children: [
                     Text(
                       'User Name',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).colorScheme.secondary),
+                      style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.secondary),
                     ),
                     Text(
                       'user@example.com',
@@ -70,7 +74,16 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 Padding(padding: EdgeInsets.symmetric(horizontal: 40)),
 
                 // Icon for the arrow
-                Icon(Ionicons.arrow_forward, size: 20, color: Theme.of(context).colorScheme.secondary,),
+                InkWell(
+                  onTap: () {
+                    accountViewModel.onArrowTap();
+                  },
+                  child: Icon(
+                    Ionicons.arrow_forward,
+                    color: Theme.of(context).colorScheme.secondary,
+                    size: 20,
+                  ),
+                ),
               ],
             ),
             SizedBox(height: 25),
