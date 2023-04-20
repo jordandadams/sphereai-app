@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../widgets/ai_assistant_screen/custom_carousel.dart';
+import '../../widgets/ai_assistant_screen/custom_carousel.dart';
 import 'ai_assistant_view_model.dart';
 
 class AIAssistantScreen extends ConsumerStatefulWidget {

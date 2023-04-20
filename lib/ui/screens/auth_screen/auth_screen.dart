@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
-import '../widgets/chats_screen/start_chat_button.dart';
+import '../../widgets/chats_screen/start_chat_button.dart';
 import 'auth_view_model.dart';
-import 'login_screen.dart';
-import 'sign_up_screen.dart';
+import '../login_screen/login_screen.dart';
+import '../sign_up_screen/sign_up_screen.dart';
 
 class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);

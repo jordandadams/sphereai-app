@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../widgets/chats_screen/start_chat_button.dart';
+import '../../widgets/chats_screen/start_chat_button.dart';
 import 'chat_view_model.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {

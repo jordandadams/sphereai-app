@@ -2,20 +2,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
-import '../widgets/chats_screen/start_chat_button.dart';
-import '../widgets/sign_up_screen/email_input.dart';
-import '../widgets/sign_up_screen/password_input.dart';
-import '../widgets/sign_up_screen/terms_checkbox.dart';
-import 'sign_up_view_model.dart';
+import '../../widgets/chats_screen/start_chat_button.dart';
+import '../../widgets/sign_up_screen/email_input.dart';
+import '../../widgets/sign_up_screen/password_input.dart';
+import 'forgot_password_screen.dart';
+import 'login_view_model.dart';
+import '../sign_up_screen/sign_up_screen.dart';
 
-class SignUpScreen extends ConsumerStatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   // Controllers for email and password TextFields
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -23,13 +24,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final signUpViewModel = ref.watch(signUpViewModelProvider);
+    final loginViewModel = ref.watch(loginViewModelProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
-          'Create Account',
+          'Login',
           style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
               fontWeight: FontWeight.bold),
@@ -55,7 +56,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             child: Row(
               children: [
                 Text(
-                  'Hello there 👋',
+                  'Welcome back 👋',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -71,7 +72,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             child: Row(
               children: [
                 Text(
-                  'Please enter your email & password to create\nan account.',
+                  'Please enter your email & password to login.',
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
@@ -123,11 +124,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ),
           SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-            child: TermsCheckBox(),
-          ),
-          SizedBox(height: 10),
-          Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
               children: [
@@ -142,24 +138,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            padding:  const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.center, // Center-align the row content
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
-                        text: 'Already have an account? ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w300,
-                          fontSize: 16,
-                          color: Theme.of(context).colorScheme.secondary,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'Log in',
+                        text: 'Forgot Password?',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
@@ -168,7 +155,53 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             // Handle the "Log in" tap here
-                            print('Log in tapped');
+                            print('Forgot Password tapped');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgotPasswordScreen()));
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.center,
+              children: [
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Don't have an account? ",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w300,
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      TextSpan(
+                        text: 'Sign up',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // Handle the "Log in" tap here
+                            print('Sign up tapped');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        SignUpScreen()));
                           },
                       ),
                     ],
@@ -194,9 +227,9 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           ),
           SizedBox(height: 25),
           StartChatButton(
-            text: 'Continue',
+            text: 'Sign In',
             onPressed: () {
-              signUpViewModel.onStartChat();
+              loginViewModel.onStartChat();
             },
           ),
         ],

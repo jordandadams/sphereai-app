@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../states/widgets/bottom_nav_bar/bottom_nav_bar_state.dart';
 import '../widgets/app_bar_gone.dart';
 import '../widgets/bottom_nav_bar.dart';
-import 'account_screen.dart';
-import 'ai_assistant_screen.dart';
-import 'chat_screen.dart';
-import 'history_screen.dart';
+import 'account_screen/account_screen.dart';
+import 'ai_assistant_screen/ai_assistant_screen.dart';
+import 'chat_screen/chat_screen.dart';
+import 'history_screen/history_screen.dart';
 
 class SkeletonScreen extends ConsumerWidget {
   const SkeletonScreen({super.key});
