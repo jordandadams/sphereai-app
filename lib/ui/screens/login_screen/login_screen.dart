@@ -5,6 +5,8 @@ import 'package:ionicons/ionicons.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/sign_up_screen/email_input.dart';
 import '../../widgets/sign_up_screen/password_input.dart';
+import '../auth_screen/auth_screen.dart';
+import '../skeleton_screen.dart';
 import 'forgot_password_screen.dart';
 import 'login_view_model.dart';
 import '../sign_up_screen/sign_up_screen.dart';
@@ -32,8 +34,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         title: Text(
           'Login',
           style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontWeight: FontWeight.bold),
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -44,7 +47,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             size: 20,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            // Use PageRouteBuilder to define custom transition
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration:
+                    Duration(milliseconds: 100), // Transition duration
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    AuthScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  // Define right-to-left transition using Tween and SlideTransition
+                  var begin = Offset(1.0, 0.0);
+                  var end = Offset.zero;
+                  var tween = Tween(begin: begin, end: end);
+                  var offsetAnimation = animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
           },
         ),
       ),
@@ -138,7 +162,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
           Padding(
-            padding:  const EdgeInsets.fromLTRB(20, 20, 20, 10),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -172,8 +196,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text.rich(
                   TextSpan(
@@ -200,8 +223,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        SignUpScreen()));
+                                    builder: (context) => SignUpScreen()));
                           },
                       ),
                     ],
@@ -230,6 +252,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             text: 'Sign In',
             onPressed: () {
               loginViewModel.onStartChat();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => SkeletonScreen()),
+                (Route<dynamic> route) => false,
+              );
             },
           ),
         ],

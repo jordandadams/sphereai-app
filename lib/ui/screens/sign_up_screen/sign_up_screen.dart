@@ -6,6 +6,7 @@ import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/sign_up_screen/email_input.dart';
 import '../../widgets/sign_up_screen/password_input.dart';
 import '../../widgets/sign_up_screen/terms_checkbox.dart';
+import '../skeleton_screen.dart';
 import 'complete_profile_screen.dart';
 import '../login_screen/login_screen.dart';
 import 'sign_up_view_model.dart';
@@ -174,8 +175,7 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) =>
-                                        LoginScreen()));
+                                    builder: (context) => LoginScreen()));
                           },
                       ),
                     ],
@@ -204,10 +204,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             text: 'Create Account',
             onPressed: () {
               signUpViewModel.onStartChat();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => CompleteProfileScreen()));
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (Route<dynamic> route) => false,
+              );
             },
           ),
         ],

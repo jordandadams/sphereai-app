@@ -2,31 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
-import '../../widgets/sign_up_screen/email_input.dart';
-import 'forgot_password_view_model.dart';
-import 'otp_screen.dart';
+import '../../widgets/sign_up_screen/password_input.dart';
+import '../auth_screen/auth_screen.dart';
+import 'login_screen.dart';
+import 'new_password_view_model.dart';
 
-class ForgotPasswordScreen extends ConsumerStatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+class NewPasswordScreen extends ConsumerStatefulWidget {
+  const NewPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+  _NewPasswordScreenState createState() => _NewPasswordScreenState();
 }
 
-class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
+class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
   // Controllers
-  final TextEditingController emailController = TextEditingController();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController confirmNewPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final forgotPasswordViewModel = ref.watch(forgotPasswordViewModelProvider);
+    final newPasswordViewModel = ref.watch(newPasswordViewModelProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: Text(
-          'Forgot Password',
+          'Password Reset',
           style: TextStyle(
               color: Theme.of(context).colorScheme.secondary,
               fontWeight: FontWeight.bold),
@@ -53,7 +56,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Reset your password 🔑',
+                  'Create New Password 🔒',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -62,7 +65,7 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  "Please enter your email and we will send an OTP code in the next step to reset your password.",
+                  "Create your new password! Make sure it is strong so no one can gain access to your account!",
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
@@ -72,13 +75,13 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
               ],
             ),
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
               children: [
                 Text(
-                  'Email',
+                  'New Password',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
@@ -89,18 +92,41 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: EmailInput(emailController: emailController),
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: PasswordInput(passwordController: newPasswordController),
           ),
-          SizedBox(height: 25),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child: Row(
+              children: [
+                Text(
+                  'Confirm New Password',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+            child:
+                PasswordInput(passwordController: confirmNewPasswordController),
+          ),
+          SizedBox(height: 40),
           StartChatButton(
-            text: 'Send Code',
+            text: 'Confirm',
             onPressed: () {
-              forgotPasswordViewModel.onStartChat();
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => OTPScreen()));
+              newPasswordViewModel.onStartChat();
+              // Navigate to LoginScreen and remove all routes below it
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                (Route<dynamic> route) => false,
+              );
             },
           ),
         ],
