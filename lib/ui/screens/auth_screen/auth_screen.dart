@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
+import '../skeleton_screen.dart';
 import 'auth_view_model.dart';
 import '../login_screen/login_screen.dart';
 import '../sign_up_screen/sign_up_screen.dart';
@@ -26,8 +27,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 16), // Add spacing between the app bar and the logo
-          // Add the logo image to the center of the screen with a specified width and height
+          SizedBox(height: 16),
           Center(
             child: Container(
               width: 200, // Set the desired width of the logo
@@ -111,7 +111,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             padding: const EdgeInsets.all(12.0),
             child: Container(
               width: double
-                  .infinity, // Make the button span across the screen horizontally
+                  .infinity,
               child: ElevatedButton(
                 onPressed: () {
                   authViewModel.onStartChat();
@@ -120,14 +120,14 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor:
-                      Theme.of(context).colorScheme.surface, // Background color
-                  foregroundColor: Colors.white, // Text color
+                      Theme.of(context).colorScheme.surface,
+                  foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius:
-                        BorderRadius.circular(30.0), // Rounded corners
+                        BorderRadius.circular(30.0),
                   ),
                   padding:
-                      EdgeInsets.symmetric(vertical: 17), // Vertical padding
+                      EdgeInsets.symmetric(vertical: 17),
                 ),
                 child: Text(
                   'Sign Up',

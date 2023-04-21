@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
+import '../../../states/auth_state.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/sign_up_screen/email_input.dart';
 import '../../widgets/sign_up_screen/password_input.dart';
@@ -10,6 +11,7 @@ import '../skeleton_screen.dart';
 import 'complete_profile_screen.dart';
 import '../login_screen/login_screen.dart';
 import 'sign_up_view_model.dart';
+import 'verify_screen.dart';
 
 class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -202,13 +204,23 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           SizedBox(height: 25),
           StartChatButton(
             text: 'Create Account',
-            onPressed: () {
-              signUpViewModel.onStartChat();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (Route<dynamic> route) => false,
-              );
+            onPressed: () async {
+              // Call the registerAccount method from the view model.
+              bool success = await signUpViewModel.registerAccount(
+                  emailController.text, passwordController.text);
+              if (success) {
+                // Navigate to the desired screen if registration succeeded.
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          VerifyScreen(email: emailController.text)),
+                  (Route<dynamic> route) => false,
+                );
+              } else {
+                print(!success);
+                // Handle registration failure (e.g., show an error message).
+              }
             },
           ),
         ],

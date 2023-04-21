@@ -4,18 +4,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/login_screen/otp_code.dart';
+import '../login_screen/login_screen.dart';
 import '../skeleton_screen.dart';
-import 'new_password_screen.dart';
-import 'otp_view_model.dart';
+import 'verify_view_model.dart';
 
-class OTPScreen extends ConsumerStatefulWidget {
-  const OTPScreen({Key? key}) : super(key: key);
+class VerifyScreen extends ConsumerStatefulWidget {
+  final String email;
+  const VerifyScreen({Key? key, required this.email}) : super(key: key);
 
   @override
-  _OTPScreenState createState() => _OTPScreenState();
+  _VerifyScreenState createState() => _VerifyScreenState();
 }
 
-class _OTPScreenState extends ConsumerState<OTPScreen> {
+class _VerifyScreenState extends ConsumerState<VerifyScreen> {
   // Create a list of focus nodes for each digit
   final List<FocusNode> focusNodes = List.generate(4, (_) => FocusNode());
 
@@ -29,7 +30,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final otpViewModel = ref.watch(otpViewModelProvider);
+    final verifyViewModel = ref.watch(verifyViewModelProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -71,7 +72,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  "We have sent an OTP code to your email (email will show here). Enter the OTP code below to verify.",
+                  "We have sent a verification code to your email ${widget.email}. Please enter the code below to verify your account.",
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
@@ -79,7 +80,9 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                //OTPCode(),
+                OTPCode(onCodeEntered: (code) {
+                  verifyViewModel.setTwoFACode(code);
+                }),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
                   child: Row(
@@ -120,11 +123,22 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
           ),
           SizedBox(height: 5),
           StartChatButton(
-            text: 'Reset Password',
-            onPressed: () {
-              otpViewModel.onStartChat();
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewPasswordScreen()));
+            text: 'Verify Account',
+            onPressed: () async {
+              // Call verifyAccount and check the result
+              bool success = await verifyViewModel.verifyAccount(widget.email);
+              if (success) {
+                print("Success");
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Verification failed!')),
+                );
+              }
             },
           ),
         ],
