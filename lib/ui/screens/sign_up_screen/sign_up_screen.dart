@@ -25,7 +25,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  String? errorMessage;
   String? emailErrorMessage;
   String? passwordErrorMessage;
 
@@ -128,7 +127,8 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
-                if (passwordErrorMessage != null && passwordErrorMessage!.isNotEmpty)
+                if (passwordErrorMessage != null &&
+                    passwordErrorMessage!.isNotEmpty)
                   Text(
                     '  Error: ${passwordErrorMessage!}',
                     style: TextStyle(color: Colors.red, fontSize: 13),
@@ -141,9 +141,19 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             child: PasswordInput(passwordController: passwordController),
           ),
           SizedBox(height: 20),
+          if (signUpViewModel.termsErrorMessage != null)
+            Text(
+              '  Error: ${signUpViewModel.termsErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 13),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
-            child: TermsCheckBox(),
+            child: TermsCheckBox(
+              isChecked: signUpViewModel.areTermsAccepted,
+              onCheckboxChanged: (_) {
+                signUpViewModel.toggleTermsAcceptance();
+              },
+            ),
           ),
           SizedBox(height: 10),
           Padding(
@@ -219,12 +229,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
           StartChatButton(
             text: 'Create Account',
             onPressed: () async {
-              // Call the registerAccount method from the view model.
+              if (!signUpViewModel.validateTermsAcceptance()) {
+                return;
+              }
               List<Map<String, String>>? errors =
                   await signUpViewModel.registerAccount(
                       emailController.text, passwordController.text);
               if (errors == null) {
-                // Navigate to the desired screen if registration succeeded.
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
@@ -233,7 +244,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   (Route<dynamic> route) => false,
                 );
               } else {
-                // Use the methods from the view model to extract error messages
                 setState(() {
                   emailErrorMessage =
                       signUpViewModel.extractEmailErrorMessage(errors);

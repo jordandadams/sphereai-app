@@ -10,8 +10,12 @@ final signUpViewModelProvider =
 
 class SignUpViewModel extends ChangeNotifier {
   final AuthState authState;
+  bool _areTermsAccepted = false;
+  String? termsErrorMessage;
 
   SignUpViewModel(this.authState);
+
+  bool get areTermsAccepted => _areTermsAccepted;
 
   Future<List<Map<String, String>>?> registerAccount(
       String email, String password) async {
@@ -31,5 +35,25 @@ class SignUpViewModel extends ChangeNotifier {
     return errors?.firstWhere(
         (e) => e['field'] == 'password',
         orElse: () => {'field': '', 'message': ''})['message'];
+  }
+
+  // Toggle the terms acceptance status
+  void toggleTermsAcceptance() {
+    _areTermsAccepted = !_areTermsAccepted;
+    // Clear the terms error message when the checkbox is checked
+    if (_areTermsAccepted) {
+      termsErrorMessage = null;
+    }
+    notifyListeners();
+  }
+
+  // Check if terms are accepted
+  bool validateTermsAcceptance() {
+    if (!_areTermsAccepted) {
+      termsErrorMessage = 'You must accept the terms and conditions.';
+      notifyListeners();
+      return false;
+    }
+    return true;
   }
 }
