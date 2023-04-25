@@ -16,9 +16,13 @@ class AuthState extends StateNotifier<bool> {
 
   AuthState(this.userRepository) : super(false);
 
-  Future<void> register(String email, String password) async {
-    bool success = await userRepository.register(email, password);
-    state = success;
+  Future<List<Map<String, String>>?> register(
+      String email, String password) async {
+    // Handle the list of error messages from UserRepository
+    final List<Map<String, String>>? errors =
+        await userRepository.register(email, password);
+    state = errors == null;
+    return errors;
   }
 
   Future<void> verify(String email, String twoFAToken) async {

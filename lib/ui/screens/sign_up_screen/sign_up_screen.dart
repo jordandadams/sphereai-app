@@ -25,6 +25,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
+  String? errorMessage;
+  String? emailErrorMessage;
+  String? passwordErrorMessage;
+
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
@@ -99,6 +103,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
+                if (emailErrorMessage != null && emailErrorMessage!.isNotEmpty)
+                  Text(
+                    '  Error: ${emailErrorMessage!}',
+                    style: TextStyle(color: Colors.red, fontSize: 13),
+                  ),
               ],
             ),
           ),
@@ -119,6 +128,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
+                if (passwordErrorMessage != null && passwordErrorMessage!.isNotEmpty)
+                  Text(
+                    '  Error: ${passwordErrorMessage!}',
+                    style: TextStyle(color: Colors.red, fontSize: 13),
+                  ),
               ],
             ),
           ),
@@ -206,9 +220,10 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             text: 'Create Account',
             onPressed: () async {
               // Call the registerAccount method from the view model.
-              bool success = await signUpViewModel.registerAccount(
-                  emailController.text, passwordController.text);
-              if (success) {
+              List<Map<String, String>>? errors =
+                  await signUpViewModel.registerAccount(
+                      emailController.text, passwordController.text);
+              if (errors == null) {
                 // Navigate to the desired screen if registration succeeded.
                 Navigator.pushAndRemoveUntil(
                   context,
@@ -218,8 +233,13 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   (Route<dynamic> route) => false,
                 );
               } else {
-                print(!success);
-                // Handle registration failure (e.g., show an error message).
+                // Use the methods from the view model to extract error messages
+                setState(() {
+                  emailErrorMessage =
+                      signUpViewModel.extractEmailErrorMessage(errors);
+                  passwordErrorMessage =
+                      signUpViewModel.extractPasswordErrorMessage(errors);
+                });
               }
             },
           ),
