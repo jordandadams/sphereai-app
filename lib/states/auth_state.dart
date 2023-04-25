@@ -25,8 +25,7 @@ class AuthState extends StateNotifier<bool> {
     return errors;
   }
 
-  Future<void> verify(String email, String twoFAToken) async {
-    bool success = await userRepository.verify(email, twoFAToken);
-    state = success;
+  Future<Map<String, dynamic>> verify(String email, String twoFAToken) async {
+    return await userRepository.verify(email, twoFAToken);
   }
 }

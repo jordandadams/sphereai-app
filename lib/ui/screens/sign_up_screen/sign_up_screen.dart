@@ -141,11 +141,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
             child: PasswordInput(passwordController: passwordController),
           ),
           SizedBox(height: 20),
-          if (signUpViewModel.termsErrorMessage != null)
-            Text(
-              '  Error: ${signUpViewModel.termsErrorMessage!}',
-              style: TextStyle(color: Colors.red, fontSize: 13),
-            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
             child: TermsCheckBox(
@@ -155,6 +150,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
               },
             ),
           ),
+          if (signUpViewModel.termsErrorMessage != null)
+            Text(
+              'Error: ${signUpViewModel.termsErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 13),
+            ),
           SizedBox(height: 10),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
@@ -236,12 +236,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                   await signUpViewModel.registerAccount(
                       emailController.text, passwordController.text);
               if (errors == null) {
-                Navigator.pushAndRemoveUntil(
+                signUpViewModel.setLastOTPSentTime(DateTime.now());
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          VerifyScreen(email: emailController.text)),
-                  (Route<dynamic> route) => false,
+                    builder: (context) => VerifyScreen(
+                      email: emailController.text,
+                      password: passwordController.text,
+                    ),
+                  ),
                 );
               } else {
                 setState(() {

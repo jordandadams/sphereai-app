@@ -6,11 +6,13 @@ import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/login_screen/otp_code.dart';
 import '../login_screen/login_screen.dart';
 import '../skeleton_screen.dart';
-import 'verify_view_model.dart';
+import 'sign_up_view_model.dart';
 
 class VerifyScreen extends ConsumerStatefulWidget {
   final String email;
-  const VerifyScreen({Key? key, required this.email}) : super(key: key);
+  final String password;
+  const VerifyScreen({Key? key, required this.email, required this.password})
+      : super(key: key);
 
   @override
   _VerifyScreenState createState() => _VerifyScreenState();
@@ -30,7 +32,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final verifyViewModel = ref.watch(verifyViewModelProvider);
+    final signUpViewModel = ref.watch(signUpViewModelProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -72,7 +74,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  "We have sent a verification code to your email ${widget.email}. Please enter the code below to verify your account.",
+                  "We have sent a verification code to your email ${widget.email}. Please enter the code below to verify your account. If you cannot verify now, please do so later under your profile!",
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
@@ -80,8 +82,14 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+                if (signUpViewModel.verificationErrorMessage != null)
+                  Text(
+                    '  Error: ${signUpViewModel.verificationErrorMessage!}',
+                    style: TextStyle(color: Colors.red, fontSize: 13),
+                  ),
+                SizedBox(height: 10),
                 OTPCode(onCodeEntered: (code) {
-                  verifyViewModel.setTwoFACode(code);
+                  signUpViewModel.setTwoFACode(code);
                 }),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
@@ -108,8 +116,48 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  // Handle the "Log in" tap here
                                   print('Resend Now Tapped');
+                                  if (signUpViewModel.canResendOTP()) {
+                                    signUpViewModel.resendOTP(
+                                        widget.email, widget.password);
+                                    print('sent');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        content: Text(
+                                          'New code has been sent!',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    int remainingSeconds =
+                                        SignUpViewModel.otpSendIntervalSeconds -
+                                            DateTime.now()
+                                                .difference(signUpViewModel
+                                                    .lastOTPSentTime!)
+                                                .inSeconds;
+                                    DateTime.now();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        content: Text(
+                                          'Please wait $remainingSeconds seconds before resending code.',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 },
                             ),
                           ],
@@ -126,18 +174,18 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
             text: 'Verify Account',
             onPressed: () async {
               // Call verifyAccount and check the result
-              bool success = await verifyViewModel.verifyAccount(widget.email);
-              if (success) {
-                print("Success");
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                  (Route<dynamic> route) => false,
-                );
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Verification failed!')),
-                );
+              await signUpViewModel.verifyAccount(widget.email);
+              try {
+                if (signUpViewModel.getVerificationErrorMessage() == null) {
+                  print("Success");
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginScreen()),
+                    (Route<dynamic> route) => false,
+                  );
+                }
+              } catch (e) {
+                print(e);
               }
             },
           ),
