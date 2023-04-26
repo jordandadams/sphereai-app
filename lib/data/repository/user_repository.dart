@@ -39,4 +39,29 @@ class UserRepository {
       return {'success': false, 'error': responseBody['error']};
     }
   }
+
+  Future<List<Map<String, String>>?> login(String email, String password) async {
+    final Uri url = Uri.parse('http://localhost:3000/api/auth/login');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email, 'password': password}),
+    );
+    final Map<String, dynamic> responseBody =
+        jsonDecode(response.body) as Map<String, dynamic>;
+
+    // Check if the response contains 'errors' key
+    if (responseBody.containsKey('errors')) {
+      // Extract and return the errors from the response
+      return (responseBody['errors'] as List<dynamic>?)?.map((dynamic e) {
+        return {
+          'field': e['field'] as String,
+          'message': e['message'] as String,
+        };
+      }).toList();
+    } else {
+      // No errors found
+      return null;
+    }
+  }
 }

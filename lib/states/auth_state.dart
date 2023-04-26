@@ -28,4 +28,12 @@ class AuthState extends StateNotifier<bool> {
   Future<Map<String, dynamic>> verify(String email, String twoFAToken) async {
     return await userRepository.verify(email, twoFAToken);
   }
+
+  Future<List<Map<String, String>>?> login(
+      String email, String password) async {
+    final List<Map<String, String>>? errors =
+        await userRepository.login(email, password);
+    state = errors == null;
+    return errors;
+  }
 }

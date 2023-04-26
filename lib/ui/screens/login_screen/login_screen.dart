@@ -107,6 +107,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             ),
           ),
           SizedBox(height: 25),
+          if (loginViewModel.emailErrorMessage != null)
+            Text(
+              '  Error: ${loginViewModel.emailErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
@@ -127,6 +132,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: EmailInput(emailController: emailController),
           ),
           SizedBox(height: 20),
+          if (loginViewModel.passwordErrorMessage != null)
+            Text(
+              '  Error: ${loginViewModel.passwordErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
@@ -250,13 +260,28 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           SizedBox(height: 25),
           StartChatButton(
             text: 'Sign In',
-            onPressed: () {
-              loginViewModel.onStartChat();
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => SkeletonScreen()),
-                (Route<dynamic> route) => false,
-              );
+            onPressed: () async {
+              List<Map<String, String>>? errors =
+                  await loginViewModel.login(
+                      emailController.text, passwordController.text);
+              print(errors);
+              if (errors == null) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => SkeletonScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              } else {
+                // Display error messages if any
+                String errorMessage = '';
+                if (loginViewModel.emailErrorMessage != null) {
+                  errorMessage += loginViewModel.emailErrorMessage! + '\n';
+                }
+                if (loginViewModel.passwordErrorMessage != null) {
+                  errorMessage += loginViewModel.passwordErrorMessage!;
+                }
+                print(errorMessage.trim());
+              }
             },
           ),
         ],
