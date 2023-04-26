@@ -27,6 +27,26 @@ class SignUpViewModel extends ChangeNotifier {
     return authState.register(email, password);
   }
 
+  String obfuscateEmail(String email) {
+    // Split the email into local part and domain
+    List<String> parts = email.split('@');
+    String localPart = parts[0];
+    String domain = parts[1];
+    // Get the first character of the local part
+    String firstChar = localPart[0];
+    // Replace the rest of the local part with asterisks
+    String obfuscatedLocalPart = firstChar + '*' * (localPart.length - 1);
+    // Get the domain extension
+    String domainExtension = domain.split('.').last;
+    // Replace the rest of the domain with asterisks
+    String obfuscatedDomain =
+        '*' * (domain.length - domainExtension.length - 1) +
+            '.' +
+            domainExtension;
+    // Return the obfuscated email
+    return obfuscatedLocalPart + '@' + obfuscatedDomain;
+  }
+
   // Extract the email error message from the errors list
   String? extractEmailErrorMessage(List<Map<String, String>>? errors) {
     return errors?.firstWhere((e) => e['field'] == 'email',

@@ -74,7 +74,7 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  "We have sent a verification code to your email ${widget.email}. Please enter the code below to verify your account. If you cannot verify now, please do so later under your profile!",
+                  "We have sent a verification code to your email ${signUpViewModel.obfuscateEmail(widget.email)}. Please enter the code below to verify your account.",
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
