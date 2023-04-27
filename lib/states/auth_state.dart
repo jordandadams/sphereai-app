@@ -36,4 +36,8 @@ class AuthState extends StateNotifier<bool> {
     state = errors == null;
     return errors;
   }
+
+  Future<Map<String, dynamic>> requestPasswordReset(String email) async {
+    return await userRepository.requestPasswordReset(email);
+  }
 }

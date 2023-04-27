@@ -5,11 +5,13 @@ import 'package:ionicons/ionicons.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/login_screen/otp_code.dart';
 import '../skeleton_screen.dart';
+import 'forgot_password_view_model.dart';
 import 'new_password_screen.dart';
 import 'otp_view_model.dart';
 
 class OTPScreen extends ConsumerStatefulWidget {
-  const OTPScreen({Key? key}) : super(key: key);
+  final String email;
+  const OTPScreen({Key? key, required this.email}) : super(key: key);
 
   @override
   _OTPScreenState createState() => _OTPScreenState();
@@ -29,7 +31,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final otpViewModel = ref.watch(otpViewModelProvider);
+    final forgotPasswordViewModel = ref.watch(forgotPasswordViewModelProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -62,7 +64,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'OTP Code Verification 🔐',
+                  'One Time Code Verification 🔐',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -71,7 +73,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  "We have sent an OTP code to your email (email will show here). Enter the OTP code below to verify.",
+                  "We have sent a one time passcode to your email ${widget.email}. Enter the OTP code below to verify.",
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
@@ -79,7 +81,9 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
-                //OTPCode(),
+                OTPCode(onCodeEntered: (code) {
+                  print(code);
+                }),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
                   child: Row(
@@ -122,7 +126,6 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
           StartChatButton(
             text: 'Reset Password',
             onPressed: () {
-              otpViewModel.onStartChat();
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => NewPasswordScreen()));
             },

@@ -40,7 +40,8 @@ class UserRepository {
     }
   }
 
-  Future<List<Map<String, String>>?> login(String email, String password) async {
+  Future<List<Map<String, String>>?> login(
+      String email, String password) async {
     final Uri url = Uri.parse('http://localhost:3000/api/auth/login');
     final response = await http.post(
       url,
@@ -62,6 +63,21 @@ class UserRepository {
     } else {
       // No errors found
       return null;
+    }
+  }
+
+  Future<Map<String, dynamic>> requestPasswordReset(String email) async {
+    final Uri url = Uri.parse('http://localhost:3000/api/auth/request-password-reset');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+    if (response.statusCode == 200) {
+      return {'success': true};
+    } else {
+      final responseBody = jsonDecode(response.body);
+      return {'success': false, 'error': responseBody['error']};
     }
   }
 }

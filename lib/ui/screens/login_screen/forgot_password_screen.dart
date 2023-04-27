@@ -73,6 +73,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
             ),
           ),
           SizedBox(height: 25),
+          if (forgotPasswordViewModel.resetPasswordErrorMessage != null)
+            Text(
+              'Error: ${forgotPasswordViewModel.resetPasswordErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 13),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
@@ -95,12 +100,22 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
           SizedBox(height: 25),
           StartChatButton(
             text: 'Send Code',
-            onPressed: () {
-              forgotPasswordViewModel.onStartChat();
-              Navigator.push(
+            onPressed: () async {
+              // Make onPressed async
+              bool success = await forgotPasswordViewModel
+                  .sendResetCode(emailController.text);
+              if (success) {
+                // Navigate to OTPScreen on success
+                Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => OTPScreen()));
+                    builder: (context) =>
+                        OTPScreen(email: emailController.text),
+                  ),
+                );
+              } else {
+                print('failed');
+              }
             },
           ),
         ],
