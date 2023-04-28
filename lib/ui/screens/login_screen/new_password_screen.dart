@@ -8,7 +8,8 @@ import 'login_screen.dart';
 import 'new_password_view_model.dart';
 
 class NewPasswordScreen extends ConsumerStatefulWidget {
-  const NewPasswordScreen({Key? key}) : super(key: key);
+  final String resetToken;
+  const NewPasswordScreen({Key? key, required this.resetToken}) : super(key: key);
 
   @override
   _NewPasswordScreenState createState() => _NewPasswordScreenState();
@@ -31,8 +32,9 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
         title: Text(
           'Password Reset',
           style: TextStyle(
-              color: Theme.of(context).colorScheme.secondary,
-              fontWeight: FontWeight.bold),
+            color: Theme.of(context).colorScheme.secondary,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -43,7 +45,28 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
             size: 20,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            // Use PageRouteBuilder to define custom transition
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                transitionDuration:
+                    Duration(milliseconds: 100), // Transition duration
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    AuthScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  // Define right-to-left transition using Tween and SlideTransition
+                  var begin = Offset(1.0, 0.0);
+                  var end = Offset.zero;
+                  var tween = Tween(begin: begin, end: end);
+                  var offsetAnimation = animation.drive(tween);
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+              ),
+            );
           },
         ),
       ),
@@ -76,6 +99,11 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
             ),
           ),
           SizedBox(height: 20),
+          if (newPasswordViewModel.newPasswordErrorMessage != null)
+            Text(
+              '  Error: ${newPasswordViewModel.newPasswordErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
@@ -96,6 +124,11 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
             child: PasswordInput(passwordController: newPasswordController),
           ),
           SizedBox(height: 20),
+          if (newPasswordViewModel.confirmNewPasswordErrorMessage != null)
+            Text(
+              '  Error: ${newPasswordViewModel.confirmNewPasswordErrorMessage!}',
+              style: TextStyle(color: Colors.red, fontSize: 14),
+            ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             child: Row(
@@ -119,14 +152,28 @@ class _NewPasswordScreenState extends ConsumerState<NewPasswordScreen> {
           SizedBox(height: 40),
           StartChatButton(
             text: 'Confirm',
-            onPressed: () {
-              newPasswordViewModel.onStartChat();
-              // Navigate to LoginScreen and remove all routes below it
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
-                (Route<dynamic> route) => false,
-              );
+            onPressed: () async {
+              List<Map<String, String>>? errors =
+                  await newPasswordViewModel.changePassword(
+                      widget.resetToken, newPasswordController.text, confirmNewPasswordController.text);
+              print(errors);
+              if (errors == null) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                  (Route<dynamic> route) => false,
+                );
+              } else {
+                // Display error messages if any
+                String errorMessage = '';
+                if (newPasswordViewModel.newPasswordErrorMessage != null) {
+                  errorMessage += newPasswordViewModel.newPasswordErrorMessage! + '\n';
+                }
+                if (newPasswordViewModel.confirmNewPasswordErrorMessage != null) {
+                  errorMessage += newPasswordViewModel.confirmNewPasswordErrorMessage!;
+                }
+                print(errorMessage.trim());
+              }
             },
           ),
         ],

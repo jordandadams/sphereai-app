@@ -5,7 +5,6 @@ import 'package:ionicons/ionicons.dart';
 import '../../widgets/chats_screen/start_chat_button.dart';
 import '../../widgets/login_screen/otp_code.dart';
 import '../skeleton_screen.dart';
-import 'forgot_password_view_model.dart';
 import 'new_password_screen.dart';
 import 'otp_view_model.dart';
 
@@ -31,7 +30,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
-    final forgotPasswordViewModel = ref.watch(forgotPasswordViewModelProvider);
+    final otpViewModel = ref.watch(otpViewModelProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -73,7 +72,7 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                 ),
                 SizedBox(height: 15),
                 Text(
-                  "We have sent a one time passcode to your email ${widget.email}. Enter the OTP code below to verify.",
+                  "We have sent a one time passcode to your email ${otpViewModel.obfuscateEmail(widget.email)}. Enter the OTP code below to verify.",
                   style: TextStyle(
                     fontWeight: FontWeight.w100,
                     fontSize: 16,
@@ -81,8 +80,13 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                   ),
                 ),
                 SizedBox(height: 20),
+                if (otpViewModel.verificationErrorMessage != null)
+                  Text(
+                    '  Error: ${otpViewModel.verificationErrorMessage!}',
+                    style: TextStyle(color: Colors.red, fontSize: 13),
+                  ),
                 OTPCode(onCodeEntered: (code) {
-                  print(code);
+                  otpViewModel.setTwoFACode(code);
                 }),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 30, 20, 10),
@@ -109,8 +113,47 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  // Handle the "Log in" tap here
                                   print('Resend Now Tapped');
+                                  if (otpViewModel.canResendOTP()) {
+                                    otpViewModel.resendOTP(widget.email);
+                                    print('sent');
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        content: Text(
+                                          'New code has been sent!',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    int remainingSeconds = OTPViewModel
+                                            .otpSendIntervalSeconds -
+                                        DateTime.now()
+                                            .difference(
+                                                otpViewModel.lastOTPSentTime!)
+                                            .inSeconds;
+                                    DateTime.now();
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                        content: Text(
+                                          'Please wait $remainingSeconds seconds before resending code.',
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background),
+                                        ),
+                                      ),
+                                    );
+                                  }
                                 },
                             ),
                           ],
@@ -125,9 +168,24 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
           SizedBox(height: 5),
           StartChatButton(
             text: 'Reset Password',
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewPasswordScreen()));
+            onPressed: () async {
+              print(widget.email);
+              print(otpViewModel.twoFACode);
+              final bool result = await otpViewModel.verifyOTPCode(
+                  widget.email, otpViewModel.twoFACode);
+              if (result) {
+                // If verification was successful
+                print("Success");
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          NewPasswordScreen(resetToken: otpViewModel.resetToken!)),
+                  (Route<dynamic> route) => false,
+                );
+              } else {
+                print('error');
+              }
             },
           ),
         ],
