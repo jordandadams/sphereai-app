@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../states/theme_mode_state.dart'; // Import the ThemeModeState file
+import '../../../states/theme_mode_state.dart'; // Import the ThemeModeState file
 
 final accountViewModelProvider = ChangeNotifierProvider<AccountViewModel>((ref) {
   return AccountViewModel(ref: ref);

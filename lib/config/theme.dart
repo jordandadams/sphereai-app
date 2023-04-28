@@ -42,7 +42,7 @@ final ColorScheme lightColorScheme = ColorScheme.light(
   background: Colors.white,
   onBackground: textSwatch.shade500,
   onSurface: textSwatch.shade500,
-  surface: textSwatch.shade50,
+  surface: Color.fromARGB(255, 228, 250, 241),
   surfaceVariant: Colors.white,
   shadow: textSwatch.shade900.withOpacity(.1),
 );
@@ -55,7 +55,7 @@ final ColorScheme darkColorScheme = ColorScheme.dark(
   background: Color.fromARGB(255, 18, 20, 25),
   onBackground: textSwatch.shade400,
   onSurface: textSwatch.shade300,
-  surface: const Color(0xFF262630),
+  surface: Color.fromARGB(255, 40, 42, 49),
   surfaceVariant: const Color(0xFF282832),
   shadow: textSwatch.shade900.withOpacity(.2),
 );

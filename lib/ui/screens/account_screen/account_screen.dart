@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
-import '../../states/theme_mode_state.dart';
-import '../widgets/account_screen/option_row.dart';
-import '../widgets/account_screen/section_title.dart';
+import '../../../states/theme_mode_state.dart';
+import '../../widgets/account_screen/option_row.dart';
+import '../../widgets/account_screen/section_title.dart';
 import 'account_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {

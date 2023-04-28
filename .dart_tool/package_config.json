@@ -134,6 +134,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "http",
+      "rootUri": "file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/http-0.13.5",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "http_parser",
+      "rootUri": "file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "intl",
       "rootUri": "file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0",
       "packageUri": "lib/",
@@ -416,7 +428,7 @@
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-04-19T00:39:55.684751Z",
+  "generated": "2023-04-20T20:27:53.131381Z",
   "generator": "pub",
   "generatorVersion": "2.18.2"
 }

@@ -70,6 +70,14 @@ hive_flutter
 2.12
 file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/hive_flutter-1.1.0/
 file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/hive_flutter-1.1.0/lib/
+http
+2.14
+file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/http-0.13.5/
+file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/http-0.13.5/lib/
+http_parser
+2.12
+file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2/
+file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/http_parser-4.0.2/lib/
 intl
 2.12
 file:///Users/jordanadams/.pub-cache/hosted/pub.dartlang.org/intl-0.17.0/
