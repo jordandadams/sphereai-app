@@ -8,6 +8,7 @@ import '../../widgets/account_screen/option_row.dart';
 import '../../widgets/account_screen/section_title.dart';
 import '../../../states/user_profile_state.dart';
 import '../auth_screen/auth_screen.dart';
+import '../personal_info_screen/personal_info_screen.dart';
 import 'account_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -102,7 +103,10 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               icon: Ionicons.person_outline,
               title: 'Personal Info',
               onTap: () {
-                accountViewModel.onArrowTap();
+                Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PersonalInfoScreen()));
               },
             ),
             SizedBox(height: 13),
