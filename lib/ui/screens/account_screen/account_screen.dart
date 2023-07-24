@@ -104,9 +104,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               title: 'Personal Info',
               onTap: () {
                 Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => PersonalInfoScreen()));
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PersonalInfoScreen()));
               },
             ),
             SizedBox(height: 13),

@@ -4,6 +4,7 @@ import 'package:ionicons/ionicons.dart';
 import '../../widgets/account_screen/option_row.dart';
 import '../../widgets/account_screen/section_title.dart';
 import 'personal_info_view_model.dart';
+import 'update_full_name_screen/update_full_name_screen.dart';
 
 class PersonalInfoScreen extends ConsumerStatefulWidget {
   const PersonalInfoScreen({Key? key}) : super(key: key);
@@ -64,7 +65,12 @@ class _PersonalInfoScreenState extends ConsumerState<PersonalInfoScreen> {
             OptionRow(
               icon: Ionicons.person_circle_outline,
               title: 'Update Full Name',
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => UpdateFullNameScreen()));
+              },
             ),
             SizedBox(height: 4),
             SectionTitle(title: ''),
