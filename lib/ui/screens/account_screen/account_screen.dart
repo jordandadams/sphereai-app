@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ionicons/ionicons.dart';
 
+import '../../../states/auth_state.dart';
 import '../../../states/theme_mode_state.dart';
 import '../../widgets/account_screen/option_row.dart';
 import '../../widgets/account_screen/section_title.dart';
 import '../../../states/user_profile_state.dart';
+import '../auth_screen/auth_screen.dart';
 import 'account_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -46,35 +48,39 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
               children: [
                 // Circle Avatar (Profile Picture)
                 CircleAvatar(
-                  backgroundImage: AssetImage(
-                      'assets/img/logo.png'), // Replace with actual profile image path
+                  backgroundImage: AssetImage('assets/img/logo.png'),
                   radius: 40,
                 ),
 
                 // Padding for spacing
                 Padding(padding: EdgeInsets.symmetric(horizontal: 15)),
 
-                // Column for displaying user's name and email
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'User Name',
-                      style: TextStyle(
+                // Use Expanded here
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'User Name',
+                        style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.secondary),
-                    ),
-                    Text(
-                      userProfile?.email ?? '',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                  ],
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
+                      ),
+                      Text(
+                        userProfile?.email ?? '',
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ],
+                  ),
                 ),
 
                 // Padding for spacing
-                Padding(padding: EdgeInsets.symmetric(horizontal: 40)),
+                Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
 
                 // Icon for the arrow
                 InkWell(
@@ -156,33 +162,41 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
             SizedBox(height: 13),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Icon(
-                    Ionicons.log_out_outline,
-                    size: 18,
-                    color: Colors.red,
-                  ),
-                  SizedBox(width: 16),
-                  Expanded(
-                    child: Text(
-                      'Logout',
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
+              child: InkWell(
+                // Move the InkWell to wrap the entire row
+                onTap: () async {
+                  await ref.read(authStateProvider.notifier).logout();
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => AuthScreen()),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Ionicons.log_out_outline,
+                      size: 18,
+                      color: Colors.red,
                     ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
+                    SizedBox(width: 16),
+                    Expanded(
+                      child: Text(
+                        'Logout',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red),
+                      ),
+                    ),
+                    Container(
                       width: 35, // Fixed width for alignment
                       alignment: Alignment
                           .centerRight, // Right alignment within the container
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             )
           ],

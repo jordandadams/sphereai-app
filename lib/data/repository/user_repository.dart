@@ -98,6 +98,27 @@ class UserRepository {
     }
   }
 
+  Future<void> logout(String token) async {
+    final Uri url = Uri.parse('http://localhost:3000/api/auth/logout');
+
+    // Log the API request
+    logger.i('Logout API Request: $url');
+
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({'token': token}),
+    );
+
+    // Log the API response
+    logger.i('Logout API Response: ${response.body}');
+
+    // Optional: Handle any specific responses if necessary
+  }
+
   Future<UserProfile> getUserProfile(String id, String token) async {
     final Uri url = Uri.parse('http://localhost:3000/api/auth/user');
 

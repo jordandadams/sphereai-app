@@ -9,7 +9,7 @@ final userProfileStateProvider = StateNotifierProvider<UserProfileState, UserPro
 class UserProfileState extends StateNotifier<UserProfile?> {
   UserProfileState() : super(null);
 
-  void updateUserProfile(UserProfile profile) {
+  void updateUserProfile(UserProfile? profile) {
     state = profile;
   }
 }

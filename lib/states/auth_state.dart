@@ -15,6 +15,7 @@ final authStateProvider = StateNotifierProvider<AuthState, bool>((ref) {
 class AuthState extends StateNotifier<bool> {
   final UserRepository userRepository;
   final UserProfileState userProfileState;
+  String? _token;
 
   AuthState(this.userRepository, this.userProfileState) : super(false);
 
@@ -36,16 +37,22 @@ class AuthState extends StateNotifier<bool> {
         await userRepository.login(email, password);
     state = response.containsKey('errors');
     if (!state) {
-      // state is false when there are no errors
-      // Get the user profile information after a successful login
+      _token = response['token'] as String; // <-- Update the _token field
       final String id = response['id'] as String;
-      final String token = response['token'] as String;
-      final userProfile = await userRepository.getUserProfile(id, token);
-      userProfileState
-          .updateUserProfile(userProfile);
+      final userProfile = await userRepository.getUserProfile(id, _token!);
+      userProfileState.updateUserProfile(userProfile);
     }
 
     return response;
+  }
+
+  Future<void> logout() async {
+    if (_token != null) {
+      await userRepository.logout(_token!);
+      state = false;
+      userProfileState.updateUserProfile(null);
+      _token = null;
+    }
   }
 
   Future<Map<String, dynamic>> requestPasswordReset(String email) async {
