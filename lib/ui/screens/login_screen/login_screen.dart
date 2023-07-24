@@ -189,7 +189,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             // Handle the "Log in" tap here
-                            print('Forgot Password tapped');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -229,7 +228,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             // Handle the "Log in" tap here
-                            print('Sign up tapped');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -261,26 +259,30 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           StartChatButton(
             text: 'Sign In',
             onPressed: () async {
-              List<Map<String, String>>? errors =
-                  await loginViewModel.login(
-                      emailController.text, passwordController.text);
-              print(errors);
-              if (errors == null) {
+              Map<String, dynamic> response = await loginViewModel.login(
+                  emailController.text, passwordController.text);
+
+              if (response.containsKey('errors')) {
+                List<Map<String, String>> errors =
+                    response['errors'] as List<Map<String, String>>;
+                print(errors);
+                // Display error messages if any
+                String errorMessage = '';
+                for (var error in errors) {
+                  if (error['field'] == 'email') {
+                    errorMessage += error['message']! + '\n';
+                  }
+                  if (error['field'] == 'password') {
+                    errorMessage += error['message']!;
+                  }
+                }
+              } else {
+                // Login was successful
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => SkeletonScreen()),
                   (Route<dynamic> route) => false,
                 );
-              } else {
-                // Display error messages if any
-                String errorMessage = '';
-                if (loginViewModel.emailErrorMessage != null) {
-                  errorMessage += loginViewModel.emailErrorMessage! + '\n';
-                }
-                if (loginViewModel.passwordErrorMessage != null) {
-                  errorMessage += loginViewModel.passwordErrorMessage!;
-                }
-                print(errorMessage.trim());
               }
             },
           ),

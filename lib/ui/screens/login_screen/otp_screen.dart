@@ -113,10 +113,8 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  print('Resend Now Tapped');
                                   if (otpViewModel.canResendOTP()) {
                                     otpViewModel.resendOTP(widget.email);
-                                    print('sent');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         backgroundColor: Theme.of(context)
@@ -169,13 +167,10 @@ class _OTPScreenState extends ConsumerState<OTPScreen> {
           StartChatButton(
             text: 'Reset Password',
             onPressed: () async {
-              print(widget.email);
-              print(otpViewModel.twoFACode);
               final bool result = await otpViewModel.verifyOTPCode(
                   widget.email, otpViewModel.twoFACode);
               if (result) {
                 // If verification was successful
-                print("Success");
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

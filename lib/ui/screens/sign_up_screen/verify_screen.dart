@@ -116,11 +116,9 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  print('Resend Now Tapped');
                                   if (signUpViewModel.canResendOTP()) {
                                     signUpViewModel.resendOTP(
                                         widget.email, widget.password);
-                                    print('sent');
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         backgroundColor: Theme.of(context)
@@ -177,7 +175,6 @@ class _VerifyScreenState extends ConsumerState<VerifyScreen> {
               await signUpViewModel.verifyAccount(widget.email);
               try {
                 if (signUpViewModel.getVerificationErrorMessage() == null) {
-                  print("Success");
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),

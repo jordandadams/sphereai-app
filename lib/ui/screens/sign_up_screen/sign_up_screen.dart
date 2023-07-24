@@ -197,7 +197,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             // Handle the "Log in" tap here
-                            print('Log in tapped');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

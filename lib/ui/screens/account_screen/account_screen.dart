@@ -5,6 +5,7 @@ import 'package:ionicons/ionicons.dart';
 import '../../../states/theme_mode_state.dart';
 import '../../widgets/account_screen/option_row.dart';
 import '../../widgets/account_screen/section_title.dart';
+import '../../../states/user_profile_state.dart';
 import 'account_view_model.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -19,6 +20,9 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
   Widget build(BuildContext context) {
     // Obtain the view model from the provider
     final accountViewModel = ref.watch(accountViewModelProvider);
+
+    // Access the current UserProfile
+    final userProfile = ref.watch(userProfileStateProvider);
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -63,8 +67,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                           color: Theme.of(context).colorScheme.secondary),
                     ),
                     Text(
-                      'user@example.com',
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
+                      userProfile?.email ?? '',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                   ],
                 ),

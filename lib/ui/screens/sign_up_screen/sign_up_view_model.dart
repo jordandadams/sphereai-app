@@ -88,7 +88,6 @@ class SignUpViewModel extends ChangeNotifier {
     final result = await authState.verify(email, twoFACode);
     if (result['success'] as bool) {
       verificationErrorMessage = null; // No error message on success
-      print('email sent');
     } else {
       // Set the error message and cast result['error'] to String?
       verificationErrorMessage = result['error'] as String?;
